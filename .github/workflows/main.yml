@@ -2,7 +2,7 @@ name: Get WBL Date
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */1 * * *'
+    - cron: '50 */1 * * *'
 jobs:
   main:
     runs-on: ubuntu-latest
