@@ -1,0 +1,38 @@
+name: Get WBL Date
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */1 * * *'
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build ${{ vars.GOODS }}
+    - uses: peaceiris/actions-gh-pages@v4
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        external_repository: EEB5266B/wbl-report-web
+        publish_branch: main
+        publish_dir: ./dist
+        destination_dir: data
+        keep_files: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+    - uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 3
+        keep_minimum_runs: 6
