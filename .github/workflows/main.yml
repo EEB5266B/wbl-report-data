@@ -1,4 +1,4 @@
-name: Get WBL Date
+name: Get WBL Data
 on:
   workflow_dispatch:
   schedule:
