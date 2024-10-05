@@ -4,14 +4,21 @@ const config = require('../../config.json')
 
 // 获取当前日期时间
 const now = new Date();
-const year = now.getFullYear();
-const month = String(now.getMonth() + 1).padStart(2, '0');
-const day = String(now.getDate()).padStart(2, '0');
-const hour = now.getHours();
+let year = now.getFullYear();
+let month = ('0' + (now.getMonth() + 1)).slice(-2);
+let day = ('0' + now.getDate()).slice(-2);
+let hour = ('0' + now.getHours()).slice(-2);
+let minute = ('0' + now.getMinutes()).slice(-2);
+let second = ('0' + now.getSeconds()).slice(-2);
+
 // 构造数据路径
 const dataPath = `${year}/${month}/${day}`;
 // 构造时间名称，用于文件名
 const timeName = `${hour}.json`;
+// 当前时间
+const updateTime = `${year}-${month}-${day} ${hour}`;
+// 创建时间
+const createTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 
 /**
  * 获取商品列表
@@ -118,6 +125,8 @@ const getGoodsInfo = (keyword) => {
             saleTotal: getGoodsTotal(saleMin),
             followHeat: getGoodsFollowHeat(listedMax),
             sellCnt: getGoodsSellCnt(listedMax),
+            updateTime,
+            createTime
         }
         // 将商品信息写入文件
         file.write(JSON.stringify(data), `${timeName}`, `${config.outputPath}/${keyword}/${dataPath}`)
