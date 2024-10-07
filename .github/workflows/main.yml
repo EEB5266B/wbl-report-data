@@ -2,14 +2,15 @@ name: Get WBL Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '59 */1 * * *'
+    - cron: '50 */1 * * *'
 jobs:
   main:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Shanghai
     permissions:
-      contents: write
+      actions: write
+      contents: read
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
